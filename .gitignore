@@ -2,4 +2,4 @@
 .env
 .vs
 **/bin
-appsettingsd.database.json
+appsettings.database.json
