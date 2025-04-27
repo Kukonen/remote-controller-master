@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using RemoteControllerMaster.Database;
+using RemoteControllerMaster.Registrators;
 
 
 namespace RemoteControllerMaster
@@ -19,6 +21,13 @@ namespace RemoteControllerMaster
             builder.RegisterScope();
 
             var app = builder.Build();
+
+            // Auto migration
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                context.Database.Migrate();
+            }
 
             app.MapControllers();
 
