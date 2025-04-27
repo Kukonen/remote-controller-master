@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteControllerMaster", "RemoteControllerMaster\RemoteControllerMaster.csproj", "{32EC2B37-1E43-4D36-955D-6FDF6F4DC82E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoteControllerMaster", "RemoteControllerMaster\RemoteControllerMaster.csproj", "{32EC2B37-1E43-4D36-955D-6FDF6F4DC82E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{5C9E03C3-8CDB-49D5-813D-273B86BE6D25}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoteControllerShared", "Shared\RemoteControllerShared\RemoteControllerShared.csproj", "{B1287FB0-5049-4669-BAB3-C4DF179DB197}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{48DAD37D-CA5E-4F95-9B66-9CE51E807134}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoteControllerCore", "Core\RemoteControllerCore\RemoteControllerCore.csproj", "{7B860769-86AD-4227-A4D6-82F96CC386FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +23,21 @@ Global
 		{32EC2B37-1E43-4D36-955D-6FDF6F4DC82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32EC2B37-1E43-4D36-955D-6FDF6F4DC82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32EC2B37-1E43-4D36-955D-6FDF6F4DC82E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1287FB0-5049-4669-BAB3-C4DF179DB197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1287FB0-5049-4669-BAB3-C4DF179DB197}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1287FB0-5049-4669-BAB3-C4DF179DB197}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1287FB0-5049-4669-BAB3-C4DF179DB197}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B860769-86AD-4227-A4D6-82F96CC386FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B860769-86AD-4227-A4D6-82F96CC386FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B860769-86AD-4227-A4D6-82F96CC386FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B860769-86AD-4227-A4D6-82F96CC386FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B1287FB0-5049-4669-BAB3-C4DF179DB197} = {5C9E03C3-8CDB-49D5-813D-273B86BE6D25}
+		{7B860769-86AD-4227-A4D6-82F96CC386FA} = {48DAD37D-CA5E-4F95-9B66-9CE51E807134}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EF7A340A-B003-4768-8A3D-BDA68CBAC74C}
