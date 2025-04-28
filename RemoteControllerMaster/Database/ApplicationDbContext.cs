@@ -21,26 +21,44 @@ namespace RemoteControllerMaster.Database
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.ToTable("Users", schema: "core");
+                entity.ToTable("users", schema: "core");
                 entity.HasKey(e => e.UserId);
-                entity.Property(e => e.UserId).IsRequired();
-                entity.Property(e => e.Login).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.UserId).HasColumnName("user_id").IsRequired();
+                entity.Property(e => e.Login).HasColumnName("login").IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Password).HasColumnName("password").IsRequired().HasMaxLength(100);
             });
 
             modelBuilder.Entity<Machine>(entity =>
             {
-                entity.ToTable("Machines", schema: "core");
+                entity.ToTable("machines", schema: "core");
                 entity.HasKey(e => e.MachineId);
-                entity.Property(e => e.MachineId).IsRequired();
+                entity.Property(e => e.MachineId).HasColumnName("machine_id").IsRequired();
             });
 
             modelBuilder.Entity<Statistic>(entity =>
             {
-                entity.ToTable("Statistics", schema: "analytics");
-                entity.HasKey(e => e.StatisticId);
-                entity.Property(e => e.StatisticId).IsRequired();
-                entity.Property(e => e.Date).IsRequired();
+                entity.ToTable("statistics", schema: "analytics");
+
+                entity.HasKey(e => new { e.StatisticId, e.Date });
+
+                entity.Property(e => e.StatisticId)
+                    .HasColumnName("statistic_id")
+                    .IsRequired();
+
+                entity.Property(e => e.MachineId)
+                    .HasColumnName("machine_id")
+                    .IsRequired();
+
+                entity.Property(e => e.Date)
+                    .HasColumnName("date")
+                    .IsRequired();
+
+                entity.HasOne<Machine>()
+                    .WithMany()
+                    .HasForeignKey(e => e.MachineId)
+                    .HasConstraintName("FK_statistics_machines_machine_id");
             });
+
         }
 
     }
