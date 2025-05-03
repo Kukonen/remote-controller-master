@@ -13,9 +13,9 @@ namespace RemoteControllerMaster.Database.Repositories.Reslization
             _context = context;
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<User?> GetByLoginAsync(string login)
         {
-            return await _context.Users.ToArrayAsync();
+            return await _context.Users.FirstOrDefaultAsync(u => u.Login == login);
         }
 
         public async Task<User?> GetByUserIdAsync(Guid userId)
@@ -23,9 +23,27 @@ namespace RemoteControllerMaster.Database.Repositories.Reslization
             return await _context.Users.FindAsync(userId);
         }
 
-        public async Task InsertAsync(User user)
+        public async Task<bool> ExistsByLoginAsync(string login)
         {
-            await _context.Users.AddAsync(user);
+            return await _context.Users.AnyAsync(u => u.Login == login);
+        }
+
+        public async Task AddAsync(User user)
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(User user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveAsync(User user)
+        {
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
         }
     }
 }

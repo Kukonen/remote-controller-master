@@ -20,40 +20,69 @@ namespace RemoteControllerMaster.BackgroundServices
             {
                 using (var scope = _serviceProvider.CreateScope())
                 {
-                    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                    await EnsureCurrentWeekPartitionAsync(dbContext);
+                    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                    await EnsureCurrentWeekPartitionAsync(context);
                 }
 
                 await Task.Delay(TimeSpan.FromMinutes(30), cancellationToken);
             }
         }
 
-        private async Task EnsureCurrentWeekPartitionAsync(ApplicationDbContext dbContext)
+        private async Task EnsureCurrentWeekPartitionAsync(ApplicationDbContext context)
+        {
+            PartitionTableInfo[] partitionTableInfos = new[]
+            {
+                new PartitionTableInfo()
+                {
+                    Schema = "analytics",
+                    SourceTable = "statistics",
+                    Days = 7
+                },
+                new PartitionTableInfo()
+                {
+                    Schema = "analytics",
+                    SourceTable = "user_log",
+                    Days = 7
+                }
+            };
+
+            foreach(var partitionTableInfo in partitionTableInfos)
+            {
+                 await context.Database.ExecuteSqlRawAsync(GenerateSqlString(partitionTableInfo));
+            }
+        }
+
+        private string GenerateSqlString(PartitionTableInfo partitionTableInfo)
         {
             DateTime now = DateTime.UtcNow;
             DateTime startOfWeek = now.AddDays(-(int)now.DayOfWeek + (int)DayOfWeek.Monday).Date;
-            DateTime endOfWeek = startOfWeek.AddDays(7);
+            DateTime endOfWeek = startOfWeek.AddDays(partitionTableInfo.Days);
             string weekName = $"{startOfWeek:yyyy}w{ISOWeek.GetWeekOfYear(startOfWeek)}";
-            string tableName = $"statistics_{weekName}";
+            string tableName = $"{partitionTableInfo.SourceTable}_{weekName}";
 
-            var createPartitionSql = $@"
+            return $@"
                 DO $$
                 BEGIN
                     IF NOT EXISTS (
                         SELECT 1 FROM information_schema.tables 
-                        WHERE table_schema = 'analytics' AND table_name = '{tableName}'
+                        WHERE table_schema = '{partitionTableInfo.Schema}' AND table_name = '{tableName}'
                     ) THEN
                         EXECUTE '
-                            CREATE TABLE analytics.{tableName} 
-                            PARTITION OF analytics.statistics
+                            CREATE TABLE {partitionTableInfo.Schema}.{tableName} 
+                            PARTITION OF {partitionTableInfo.Schema}.{partitionTableInfo.SourceTable}
                             FOR VALUES FROM (''{startOfWeek:yyyy-MM-dd}'') TO (''{endOfWeek:yyyy-MM-dd}'');
                         ';
                     END IF;
                 END
                 $$;
             ";
+        }
 
-            await dbContext.Database.ExecuteSqlRawAsync(createPartitionSql);
+        private class PartitionTableInfo
+        {
+            public string Schema { get; set; }
+            public string SourceTable { get; set; }
+            public int Days { get; set; }
         }
     }
 }

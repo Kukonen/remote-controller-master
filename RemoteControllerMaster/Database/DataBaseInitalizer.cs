@@ -15,7 +15,6 @@ namespace RemoteControllerMaster.Database
                 .ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
             context.Database.Migrate();
-            //context.Database.EnsureCreated();
         }
     }
 }

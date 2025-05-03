@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RemoteControllerMaster.Database;
+using RemoteControllerMaster.Database.Repositories.Interfaces;
+using RemoteControllerMaster.Database.Repositories.Reslization;
 
 
 namespace RemoteControllerMaster.Registrators
@@ -8,9 +10,17 @@ namespace RemoteControllerMaster.Registrators
     {
         public static void RegisterDb(this WebApplicationBuilder builder)
         {
-            var a = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+        }
+
+        public static void RegisterRepositories(this WebApplicationBuilder builder)
+        {
+
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUserLogRepository, UserLogRepository>();
+            builder.Services.AddScoped<IUser2PermissionRepository, User2PermissionRepository>();
+            builder.Services.AddScoped<IAuthorizeTokenRepository, AuthorizeTokenRepository>();
         }
     }
 }

@@ -1,11 +1,15 @@
 ﻿using RemoteControllerMaster.Database.Models;
 
+
 namespace RemoteControllerMaster.Database.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<User>> GetAllAsync();
+        Task<User?> GetByLoginAsync(string login);
         Task<User?> GetByUserIdAsync(Guid userId);
-        Task InsertAsync(User user);
+        Task<bool> ExistsByLoginAsync(string login);
+        Task AddAsync(User user);
+        Task UpdateAsync(User user);
+        Task RemoveAsync(User user);
     }
 }

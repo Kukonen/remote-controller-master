@@ -13,8 +13,10 @@ namespace RemoteControllerMaster
 
             builder.RegisterConfiguration();
             builder.RegisterDb();
+            builder.RegisterRepositories();
             builder.RegisterScope();
             builder.RegisterBackgroundServices();
+            builder.RegisterAuthorize();
 
             builder.Services.AddControllers();
 
@@ -22,7 +24,10 @@ namespace RemoteControllerMaster
 
             DataBaseInitalizer.Init(app);
 
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.MapControllers();
+            app.RegisterMiddlewares();
 
             app.Run();
         }

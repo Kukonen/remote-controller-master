@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RemoteControllerMaster.Database;
@@ -11,9 +12,11 @@ using RemoteControllerMaster.Database;
 namespace RemoteControllerMaster.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250429205305_AuthTables")]
+    partial class AuthTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,37 +142,6 @@ namespace RemoteControllerMaster.Database.Migrations
                     b.ToTable("users_permissions", "core");
                 });
 
-            modelBuilder.Entity("RemoteControllerMaster.Database.Models.UserLog", b =>
-                {
-                    b.Property<Guid>("UserLogId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_log_id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Request")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("request");
-
-                    b.Property<string>("Response")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("response");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("UserLogId", "CreatedAt");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("user_log", "analytics");
-                });
-
             modelBuilder.Entity("RemoteControllerMaster.Database.Models.AuthorizeToken", b =>
                 {
                     b.HasOne("RemoteControllerMaster.Database.Models.User", null)
@@ -205,13 +177,6 @@ namespace RemoteControllerMaster.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_users_permissions_User_id");
-                });
-
-            modelBuilder.Entity("RemoteControllerMaster.Database.Models.UserLog", b =>
-                {
-                    b.HasOne("RemoteControllerMaster.Database.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

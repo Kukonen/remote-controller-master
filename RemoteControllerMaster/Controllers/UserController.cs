@@ -16,11 +16,11 @@ namespace RemoteControllerMaster.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<User>> Get()
-        {
-            return await _userRepository.GetAllAsync();
-        }
+        //[HttpGet]
+        //public async Task<IEnumerable<User>> Get()
+        //{
+            //return await _userRepository.GetAllAsync();
+        //}
 
         [HttpGet("{id}")]
         public async Task<User?> Get(Guid userId)
@@ -31,7 +31,7 @@ namespace RemoteControllerMaster.Controllers
         [HttpPost]
         public async Task Post(User user)
         {
-            await _userRepository.InsertAsync(user);
+            //await _userRepository.InsertAsync(user);
         }
     }
 }
