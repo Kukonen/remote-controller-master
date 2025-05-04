@@ -13,7 +13,7 @@ namespace RemoteControllerMaster.Database.Migrations
             migrationBuilder.RenameTable(
                 name: "user_log",
                 schema: "core",
-                newName: "user_log",
+                newName: "user_logs",
                 newSchema: "analytics");
         }
 
@@ -21,7 +21,7 @@ namespace RemoteControllerMaster.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameTable(
-                name: "user_log",
+                name: "user_logs",
                 schema: "analytics",
                 newName: "user_log",
                 newSchema: "core");

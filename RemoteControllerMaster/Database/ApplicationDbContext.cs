@@ -19,6 +19,9 @@ namespace RemoteControllerMaster.Database
         public DbSet<AuthorizeToken> AuthorizeTokens { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<UserLog> UserLogs { get; set; }
+        public DbSet<CommandType> CommandTypes { get; set; }
+        public DbSet<Command> Commands { get; set; }
+        public DbSet<Command2Permission> Commands2Permissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -125,7 +128,7 @@ namespace RemoteControllerMaster.Database
 
             modelBuilder.Entity<UserLog>(entity =>
             {
-                entity.ToTable("user_log", "analytics");
+                entity.ToTable("user_logs", "analytics");
                 entity.HasKey(e => new { e.UserLogId, e.CreatedAt });
 
                 entity.Property(e => e.UserLogId).HasColumnName("user_log_id").IsRequired();
@@ -137,6 +140,50 @@ namespace RemoteControllerMaster.Database
                 entity.HasOne<User>()
                     .WithMany()
                     .HasForeignKey(e => e.UserId);
+            });
+
+            modelBuilder.Entity<CommandType>(entity =>
+            {
+                entity.ToTable("command_types", schema: "enum");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasConversion(
+                        new ValueConverter<Enums.CommandType, int>(
+                            v => (int)v,
+                            v => (Enums.CommandType)v
+                        )
+                    ).HasColumnName("id").IsRequired();
+                entity.Property(e => e.Name).HasColumnName("name").IsRequired();
+            });
+
+            modelBuilder.Entity<Command>(entity =>
+            {
+                entity.ToTable("commands", "core");
+                entity.HasKey(e => e.CommandId);
+
+                entity.Property(e => e.CommandId).HasColumnName("command_id").IsRequired();
+                entity.Property(e => e.CommandText).HasColumnName("command_text").HasColumnType("text").IsRequired();
+                entity.Property(e => e.AdditionalInformationText).HasColumnName("additional_information_text").HasColumnType("text");
+                entity.Property(e => e.CommandType).HasColumnName("command_type").IsRequired();
+
+                entity.HasOne<CommandType>()
+                    .WithMany()
+                    .HasForeignKey(e => e.CommandType);
+            });
+
+            modelBuilder.Entity<Command2Permission>(entity =>
+            {
+                entity.ToTable("commands_permissions", schema: "core");
+                entity.HasKey(e => new { e.CommandId, e.Permission });
+                entity.Property(e => e.CommandId).HasColumnName("command_id").IsRequired();
+                entity.Property(e => e.Permission).HasColumnName("permission").IsRequired();
+
+                entity.HasOne<User>()
+                    .WithMany()
+                    .HasForeignKey(e => e.CommandId);
+
+                entity.HasOne<Permission>()
+                    .WithMany()
+                    .HasForeignKey(e => e.Permission);
             });
 
         }

@@ -12,8 +12,8 @@ using RemoteControllerMaster.Database;
 namespace RemoteControllerMaster.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250501122321_ChangeUserLogToUserIdNullable")]
-    partial class ChangeUserLogToUserIdNullable
+    [Migration("20250503161209_AddUserLogsAndCommands")]
+    partial class AddUserLogsAndCommands
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,67 @@ namespace RemoteControllerMaster.Database.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("authorize_tokens", "core");
+                });
+
+            modelBuilder.Entity("RemoteControllerMaster.Database.Models.Command", b =>
+                {
+                    b.Property<Guid>("CommandId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("command_id");
+
+                    b.Property<string>("AdditionalInformationText")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("additional_information_text");
+
+                    b.Property<string>("CommandText")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("command_text");
+
+                    b.Property<int>("CommandType")
+                        .HasColumnType("integer")
+                        .HasColumnName("command_type");
+
+                    b.HasKey("CommandId");
+
+                    b.HasIndex("CommandType");
+
+                    b.ToTable("commands", "core");
+                });
+
+            modelBuilder.Entity("RemoteControllerMaster.Database.Models.Command2Permission", b =>
+                {
+                    b.Property<Guid>("CommandId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("command_id");
+
+                    b.Property<int>("Permission")
+                        .HasColumnType("integer")
+                        .HasColumnName("permission");
+
+                    b.HasKey("CommandId", "Permission");
+
+                    b.HasIndex("Permission");
+
+                    b.ToTable("commands_permissions", "core");
+                });
+
+            modelBuilder.Entity("RemoteControllerMaster.Database.Models.CommandType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("command_types", "enum");
                 });
 
             modelBuilder.Entity("RemoteControllerMaster.Database.Models.Machine", b =>
@@ -170,7 +231,7 @@ namespace RemoteControllerMaster.Database.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("user_log", "analytics");
+                    b.ToTable("user_logs", "analytics");
                 });
 
             modelBuilder.Entity("RemoteControllerMaster.Database.Models.AuthorizeToken", b =>
@@ -181,6 +242,30 @@ namespace RemoteControllerMaster.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_authorize_tokens_user_id");
+                });
+
+            modelBuilder.Entity("RemoteControllerMaster.Database.Models.Command", b =>
+                {
+                    b.HasOne("RemoteControllerMaster.Database.Models.CommandType", null)
+                        .WithMany()
+                        .HasForeignKey("CommandType")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RemoteControllerMaster.Database.Models.Command2Permission", b =>
+                {
+                    b.HasOne("RemoteControllerMaster.Database.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("CommandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RemoteControllerMaster.Database.Models.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("Permission")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("RemoteControllerMaster.Database.Models.Statistic", b =>
