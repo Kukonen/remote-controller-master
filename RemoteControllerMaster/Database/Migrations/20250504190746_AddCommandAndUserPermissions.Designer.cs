@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RemoteControllerMaster.Database;
@@ -11,9 +12,11 @@ using RemoteControllerMaster.Database;
 namespace RemoteControllerMaster.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250504190746_AddCommandAndUserPermissions")]
+    partial class AddCommandAndUserPermissions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,11 +120,6 @@ namespace RemoteControllerMaster.Database.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("machine_id");
 
-                    b.Property<string>("MachineName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("machine_name");
-
                     b.HasKey("MachineId");
 
                     b.ToTable("machines", "core");
@@ -186,23 +184,6 @@ namespace RemoteControllerMaster.Database.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("users", "core");
-                });
-
-            modelBuilder.Entity("RemoteControllerMaster.Database.Models.User2Machine", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
-                    b.Property<Guid>("MachineId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("machine_id");
-
-                    b.HasKey("UserId", "MachineId");
-
-                    b.HasIndex("MachineId");
-
-                    b.ToTable("users_machines", "core");
                 });
 
             modelBuilder.Entity("RemoteControllerMaster.Database.Models.User2Permission", b =>
@@ -295,21 +276,6 @@ namespace RemoteControllerMaster.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_statistics_machines_machine_id");
-                });
-
-            modelBuilder.Entity("RemoteControllerMaster.Database.Models.User2Machine", b =>
-                {
-                    b.HasOne("RemoteControllerMaster.Database.Models.Machine", null)
-                        .WithMany()
-                        .HasForeignKey("MachineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RemoteControllerMaster.Database.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("RemoteControllerMaster.Database.Models.User2Permission", b =>

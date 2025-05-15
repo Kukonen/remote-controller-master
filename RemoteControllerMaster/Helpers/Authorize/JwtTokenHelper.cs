@@ -10,9 +10,9 @@ namespace RemoteControllerMaster.Helpers.Authorize
 {
     public class JwtTokenHelper
     {
-        private static readonly string SecretKey = "supersecretkey!123"; // переносить в конфиг
+        private static readonly string SecretKey = "secret-jwt-sring-must-be-min-32-charecters-!!";
 
-        public static string GenerateToken(User user, IEnumerable<Enums.Permission> permissions)
+        public static string GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(SecretKey);
@@ -22,10 +22,6 @@ namespace RemoteControllerMaster.Helpers.Authorize
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                 new Claim(ClaimTypes.Name, user.Login)
             };
-
-            claims.AddRange(permissions.Select(p =>
-                new Claim("permission", p.ToString())
-            ));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

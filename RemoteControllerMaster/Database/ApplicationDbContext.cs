@@ -22,6 +22,7 @@ namespace RemoteControllerMaster.Database
         public DbSet<CommandType> CommandTypes { get; set; }
         public DbSet<Command> Commands { get; set; }
         public DbSet<Command2Permission> Commands2Permissions { get; set; }
+        public DbSet<User2Machine> Users2Machines { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +42,7 @@ namespace RemoteControllerMaster.Database
                 entity.ToTable("machines", schema: "core");
                 entity.HasKey(e => e.MachineId);
                 entity.Property(e => e.MachineId).HasColumnName("machine_id").IsRequired();
+                entity.Property(e => e.MachineName).HasColumnName("machine_name").IsRequired();
             });
 
             modelBuilder.Entity<Statistic>(entity =>
@@ -184,6 +186,22 @@ namespace RemoteControllerMaster.Database
                 entity.HasOne<Permission>()
                     .WithMany()
                     .HasForeignKey(e => e.Permission);
+            });
+
+            modelBuilder.Entity<User2Machine>(entity =>
+            {
+                entity.ToTable("users_machines", schema: "core");
+                entity.HasKey(e => new { e.UserId, e.MachineId });
+                entity.Property(e => e.UserId).HasColumnName("user_id").IsRequired();
+                entity.Property(e => e.MachineId).HasColumnName("machine_id").IsRequired();
+
+                entity.HasOne<User>()
+                    .WithMany()
+                    .HasForeignKey(e => e.UserId);
+
+                entity.HasOne<Machine>()
+                    .WithMany()
+                    .HasForeignKey(e => e.MachineId);
             });
 
         }

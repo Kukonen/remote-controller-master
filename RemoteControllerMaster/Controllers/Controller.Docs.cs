@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RemoteControllerMaster.Attributes.Authorize;
 using RemoteControllerMaster.Database.Models;
 
 
@@ -13,6 +14,7 @@ namespace RemoteControllerMaster.Controllers
         }
 
         [HttpPost]
+        [AuthorizePermissions(Enums.Permission.User_Read)]
         public async Task<User> PostUserUser(Permission permission)
         {
             await UserLogAsync(

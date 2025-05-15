@@ -1,6 +1,8 @@
 ﻿using RemoteControllerMaster.Database.Repositories.Interfaces;
 using RemoteControllerMaster.Database.Repositories.Reslization;
 using RemoteControllerMaster.Models.App;
+using RemoteControllerMaster.Presenters.Interfaces;
+using RemoteControllerMaster.Presenters.Realization;
 
 namespace RemoteControllerMaster.Registrators
 {
@@ -8,7 +10,8 @@ namespace RemoteControllerMaster.Registrators
     {
         public static void RegisterScope(this WebApplicationBuilder builder)
         {
-
+            builder.Services.AddScoped<IUserPresenter, UserPresenter>();
+            builder.Services.AddScoped<IMachinePresenter, MachinePresenter>();
         }
 
         public static void RegisterConfiguration(this WebApplicationBuilder builder)

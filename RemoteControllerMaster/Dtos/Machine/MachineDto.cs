@@ -1,6 +1,6 @@
-﻿namespace RemoteControllerMaster.Database.Models
+﻿namespace RemoteControllerMaster.Dtos.Machine
 {
-    public class Machine
+    public class MachineDto
     {
         public Guid MachineId { get; set; }
         public string MachineName { get; set; }

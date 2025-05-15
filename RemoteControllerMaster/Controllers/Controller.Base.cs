@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RemoteControllerMaster.Database.Models;
 using RemoteControllerMaster.Database.Repositories.Interfaces;
+using RemoteControllerMaster.Presenters.Interfaces;
 using System.Text.Json;
 
 
@@ -10,11 +11,19 @@ namespace RemoteControllerMaster.Controllers
     [ApiController]
     public partial class Controller : ControllerBase
     {
-        private IUserLogRepository _userLogRepository;
+        private readonly IUserLogRepository _userLogRepository;
+        private readonly IUserPresenter _userPresenter;
+        private readonly IMachinePresenter _machinePresenter;
 
-        public Controller(IUserLogRepository userLogRepository)
+        public Controller(
+            IUserLogRepository userLogRepository, 
+            IUserPresenter userPresenter,
+            IMachinePresenter machinePresenter
+        )
         {
             _userLogRepository = userLogRepository;
+            _userPresenter = userPresenter;
+            _machinePresenter = machinePresenter;
         }
 
         private async Task UserLogAsync(Guid? userId = null, object? request = null, object? respose = null, object? aditional = null)

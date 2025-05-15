@@ -13,6 +13,11 @@ namespace RemoteControllerMaster.Database.Repositories.Reslization
             _context = context;
         }
 
+        public async Task<User[]> GetAllAsync()
+        {
+            return await _context.Users.ToArrayAsync();
+        }
+
         public async Task<User?> GetByLoginAsync(string login)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Login == login);

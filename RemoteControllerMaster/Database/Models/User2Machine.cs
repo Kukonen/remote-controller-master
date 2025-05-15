@@ -1,8 +1,8 @@
 ﻿namespace RemoteControllerMaster.Database.Models
 {
-    public class Machine
+    public class User2Machine
     {
+        public Guid UserId { get; set; }
         public Guid MachineId { get; set; }
-        public string MachineName { get; set; }
     }
 }
