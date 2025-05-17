@@ -12,5 +12,6 @@ namespace RemoteControllerMaster.Database.Repositories.Interfaces
         Task AddAsync(User user);
         Task UpdateAsync(User user);
         Task RemoveAsync(User user);
+        Task RemoveAsync(Guid userId);
     }
 }

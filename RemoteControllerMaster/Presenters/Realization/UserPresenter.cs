@@ -95,9 +95,6 @@ namespace RemoteControllerMaster.Presenters.Realization
             if (user == null)
                 return new UnauthorizedResult();
 
-            var permissions = (await _user2PermissionRepository.GetPermissionsAsync(user.UserId))
-                                .Select(p => p.Permission);
-
             var newAccessToken = JwtTokenHelper.GenerateToken(user);
             var newRefreshToken = JwtTokenHelper.GenerateRefreshToken();
 
@@ -156,6 +153,39 @@ namespace RemoteControllerMaster.Presenters.Realization
             await _user2MachineRepository.AddMachinesByUserIdAsync(request.UserId, request.MachinesIds);
 
             return new OkResult();
+        }
+
+        public async Task<IActionResult> DeleteUser(Guid userId)
+        {
+            await _user2PermissionRepository.RemovePermissionsAsync(userId);
+            await _user2MachineRepository.RemoveMachinesAsync(userId);
+            await _userRepository.RemoveAsync(userId);
+
+            return new OkResult();
+        }
+
+        public async Task<IActionResult> GetUserWithPermissionsAndMachines(Guid userId)
+        {
+            var user = await _userRepository.GetByUserIdAsync(userId);
+
+            if (user == null)
+            {
+                return new BadRequestResult();
+            }
+
+            var users2machines = await _user2MachineRepository.GetByUsersIdsAsync(new Guid[] { userId });
+            var permissions = (await _user2PermissionRepository.GetPermissionsAsync(userId)).Select(p => p.Permission);
+            var machines = (await _machineRepository.GetByMachinesIds(users2machines
+                    .Select(u2m => u2m.MachineId)
+                    .ToArray()
+                )).Select(m => m.MapToDto());
+
+            return new OkObjectResult(new UsersWithPermissionsResponse()
+            {
+                User = user.MapToDto(),
+                Machines = machines?.ToArray(),
+                Permissions = permissions?.ToArray()
+            });
         }
     }
 }

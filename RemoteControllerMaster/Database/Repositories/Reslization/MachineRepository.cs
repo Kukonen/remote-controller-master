@@ -22,5 +22,27 @@ namespace RemoteControllerMaster.Database.Repositories.Reslization
         {
             return await _context.Machines.Where(m => machineIds.Contains(m.MachineId)).ToArrayAsync();
         }
+
+        public async Task AddMachine(Machine machine)
+        {
+            _context.Machines.Add(machine);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateMachine(Machine machine)
+        {
+            _context.Machines.Update(machine);
+            await _context.SaveChangesAsync();
+        }
+        public async Task RemoveMachine(Guid machineId)
+        {
+            var machine = await _context.Machines.FirstAsync(m => m.MachineId == machineId);
+            if (machine != null)
+            {
+                _context.Machines.Remove(machine);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

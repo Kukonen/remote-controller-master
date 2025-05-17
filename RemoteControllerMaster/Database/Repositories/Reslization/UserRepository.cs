@@ -50,5 +50,15 @@ namespace RemoteControllerMaster.Database.Repositories.Reslization
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
         }
+
+        public async Task RemoveAsync(Guid userId)
+        {
+            var user = await _context.Users.FirstAsync(u => u.UserId == userId);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

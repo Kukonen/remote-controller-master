@@ -12,5 +12,7 @@ namespace RemoteControllerMaster.Presenters.Interfaces
         Task<IActionResult> GetUsersWithPermissionsAndMachines();
         Task<IActionResult> UpdateUserPermission(User2PermissionUpdateRequestDto request);
         Task<IActionResult> UpdateUserMachines(User2MachineUpdateRequestDto request);
+        Task<IActionResult> DeleteUser(Guid userId);
+        Task<IActionResult> GetUserWithPermissionsAndMachines(Guid userId);
     }
 }

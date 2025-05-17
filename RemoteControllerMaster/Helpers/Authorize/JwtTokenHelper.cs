@@ -20,7 +20,7 @@ namespace RemoteControllerMaster.Helpers.Authorize
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, user.Login)
+                new Claim(ClaimTypes.Name, user.Login),
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor

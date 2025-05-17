@@ -13,5 +13,14 @@ namespace RemoteControllerMaster.Mappers
                 MachineName = machine.MachineName,
             };
         }
+
+        public static Machine MapToDo(this MachineDto machine)
+        {
+            return new Machine()
+            {
+                MachineId = machine.MachineId,
+                MachineName = machine.MachineName,
+            };
+        }
     }
 }

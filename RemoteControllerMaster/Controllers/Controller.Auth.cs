@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RemoteControllerMaster.Attributes.Authorize;
 using RemoteControllerMaster.Database.Models;
 using RemoteControllerMaster.Database.Repositories.Interfaces;
 using RemoteControllerMaster.Dtos.Auth;
@@ -10,6 +11,7 @@ namespace RemoteControllerMaster.Controllers
 {
     public partial class Controller
     {
+        [AuthorizePermissions(new Enums.Permission[] { Enums.Permission.User_Write })]
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
