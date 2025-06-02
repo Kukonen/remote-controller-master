@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RemoteControllerMaster.Attributes.Authorize;
+using RemoteControllerMaster.Dtos.Machine;
 using RemoteControllerMaster.Dtos.User;
 
 namespace RemoteControllerMaster.Controllers

@@ -12,6 +12,7 @@ namespace RemoteControllerMaster.Registrators
         {
             builder.Services.AddScoped<IUserPresenter, UserPresenter>();
             builder.Services.AddScoped<IMachinePresenter, MachinePresenter>();
+            builder.Services.AddScoped<ICommandPresenter, CommandPresenter>();
         }
 
         public static void RegisterConfiguration(this WebApplicationBuilder builder)

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RemoteControllerMaster.Database;
@@ -11,9 +12,11 @@ using RemoteControllerMaster.Database;
 namespace RemoteControllerMaster.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250527203626_AddAnalisColumns")]
+    partial class AddAnalisColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,16 +73,28 @@ namespace RemoteControllerMaster.Database.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("command_type");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
                     b.HasKey("CommandId");
 
                     b.HasIndex("CommandType");
 
                     b.ToTable("commands", "core");
+                });
+
+            modelBuilder.Entity("RemoteControllerMaster.Database.Models.Command2Permission", b =>
+                {
+                    b.Property<Guid>("CommandId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("command_id");
+
+                    b.Property<int>("Permission")
+                        .HasColumnType("integer")
+                        .HasColumnName("permission");
+
+                    b.HasKey("CommandId", "Permission");
+
+                    b.HasIndex("Permission");
+
+                    b.ToTable("commands_permissions", "core");
                 });
 
             modelBuilder.Entity("RemoteControllerMaster.Database.Models.CommandType", b =>
@@ -104,11 +119,6 @@ namespace RemoteControllerMaster.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("machine_id");
-
-                    b.Property<string>("IpAddress")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("ip_address");
 
                     b.Property<string>("MachineName")
                         .IsRequired()
@@ -271,6 +281,21 @@ namespace RemoteControllerMaster.Database.Migrations
                     b.HasOne("RemoteControllerMaster.Database.Models.CommandType", null)
                         .WithMany()
                         .HasForeignKey("CommandType")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RemoteControllerMaster.Database.Models.Command2Permission", b =>
+                {
+                    b.HasOne("RemoteControllerMaster.Database.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("CommandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RemoteControllerMaster.Database.Models.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("Permission")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

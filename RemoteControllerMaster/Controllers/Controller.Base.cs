@@ -14,16 +14,19 @@ namespace RemoteControllerMaster.Controllers
         private readonly IUserLogRepository _userLogRepository;
         private readonly IUserPresenter _userPresenter;
         private readonly IMachinePresenter _machinePresenter;
+        private readonly ICommandPresenter _commandPresenter;
 
         public Controller(
             IUserLogRepository userLogRepository, 
             IUserPresenter userPresenter,
-            IMachinePresenter machinePresenter
+            IMachinePresenter machinePresenter,
+            ICommandPresenter commandPresenter
         )
         {
             _userLogRepository = userLogRepository;
             _userPresenter = userPresenter;
             _machinePresenter = machinePresenter;
+            _commandPresenter = commandPresenter;
         }
 
         private async Task UserLogAsync(Guid? userId = null, object? request = null, object? respose = null, object? aditional = null)

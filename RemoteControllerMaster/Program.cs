@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using RemoteControllerMaster.Database;
+using RemoteControllerMaster.Hubs;
 using RemoteControllerMaster.Registrators;
 
 
@@ -32,7 +32,10 @@ namespace RemoteControllerMaster
             });
 
             builder.Services.AddControllers();
+            builder.Services.AddHttpClient();
 
+            // Подключение SignalR
+            builder.Services.AddSignalR();
             var app = builder.Build();
 
             DataBaseInitalizer.Init(app);
@@ -42,6 +45,9 @@ namespace RemoteControllerMaster
             app.UseAuthorization();
             app.MapControllers();
             app.RegisterMiddlewares();
+
+            // Маршруты SignalR
+            app.MapHub<MachinesHub>("/machinesHub");
 
             app.Run();
         }

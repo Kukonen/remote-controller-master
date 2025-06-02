@@ -43,10 +43,10 @@ namespace RemoteControllerMaster.Controllers
         }
 
         [AuthorizePermissions(new Enums.Permission[] { Enums.Permission.Machine_Write })]
-        [HttpPost("DeleteMachine")]
-        public async Task<IActionResult> DeleteMachine(MachineDto machineDto)
+        [HttpDelete("DeleteMachine")]
+        public async Task<IActionResult> DeleteMachine([FromQuery] Guid machineId)
         {
-            return await _machinePresenter.UpdateMachine(machineDto);
+            return await _machinePresenter.DeleteMachine(machineId);
         }
     }
 }

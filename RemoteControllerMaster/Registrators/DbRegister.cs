@@ -22,6 +22,8 @@ namespace RemoteControllerMaster.Registrators
             builder.Services.AddScoped<IAuthorizeTokenRepository, AuthorizeTokenRepository>();
             builder.Services.AddScoped<IMachineRepository, MachineRepository>();
             builder.Services.AddScoped<IUser2MachineRepository, User2MachineRepository>();
+            builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+            builder.Services.AddScoped<ICommandRepository, CommandRepository>();
         }
     }
 }

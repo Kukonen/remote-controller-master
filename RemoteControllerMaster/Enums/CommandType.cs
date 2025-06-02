@@ -2,7 +2,7 @@
 {
     public enum CommandType
     {
-        SSH = 1,
+        Console = 1,
         HTTP = 2
     }
 }

@@ -11,6 +11,7 @@ namespace RemoteControllerMaster.Mappers
             {
                 MachineId = machine.MachineId,
                 MachineName = machine.MachineName,
+                IpAddress = machine.IpAddress,
             };
         }
 
@@ -20,6 +21,7 @@ namespace RemoteControllerMaster.Mappers
             {
                 MachineId = machine.MachineId,
                 MachineName = machine.MachineName,
+                IpAddress = machine.IpAddress,
             };
         }
     }

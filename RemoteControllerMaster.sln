@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{48DAD37D-C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoteControllerCore", "Core\RemoteControllerCore\RemoteControllerCore.csproj", "{7B860769-86AD-4227-A4D6-82F96CC386FA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{49D73F92-70CE-4F8D-8428-B0294D0C0E3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{57C58DD0-5CDE-4AB4-B605-F195F3BACAC6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,10 @@ Global
 		{7B860769-86AD-4227-A4D6-82F96CC386FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B860769-86AD-4227-A4D6-82F96CC386FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B860769-86AD-4227-A4D6-82F96CC386FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57C58DD0-5CDE-4AB4-B605-F195F3BACAC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57C58DD0-5CDE-4AB4-B605-F195F3BACAC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57C58DD0-5CDE-4AB4-B605-F195F3BACAC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57C58DD0-5CDE-4AB4-B605-F195F3BACAC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,6 +46,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B1287FB0-5049-4669-BAB3-C4DF179DB197} = {5C9E03C3-8CDB-49D5-813D-273B86BE6D25}
 		{7B860769-86AD-4227-A4D6-82F96CC386FA} = {48DAD37D-CA5E-4F95-9B66-9CE51E807134}
+		{57C58DD0-5CDE-4AB4-B605-F195F3BACAC6} = {49D73F92-70CE-4F8D-8428-B0294D0C0E3D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EF7A340A-B003-4768-8A3D-BDA68CBAC74C}

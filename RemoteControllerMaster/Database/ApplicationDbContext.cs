@@ -21,7 +21,6 @@ namespace RemoteControllerMaster.Database
         public DbSet<UserLog> UserLogs { get; set; }
         public DbSet<CommandType> CommandTypes { get; set; }
         public DbSet<Command> Commands { get; set; }
-        public DbSet<Command2Permission> Commands2Permissions { get; set; }
         public DbSet<User2Machine> Users2Machines { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -43,6 +42,7 @@ namespace RemoteControllerMaster.Database
                 entity.HasKey(e => e.MachineId);
                 entity.Property(e => e.MachineId).HasColumnName("machine_id").IsRequired();
                 entity.Property(e => e.MachineName).HasColumnName("machine_name").IsRequired();
+                entity.Property(e => e.IpAddress).HasColumnName("ip_address").IsRequired();
             });
 
             modelBuilder.Entity<Statistic>(entity =>
@@ -61,6 +61,14 @@ namespace RemoteControllerMaster.Database
 
                 entity.Property(e => e.Date)
                     .HasColumnName("date")
+                    .IsRequired();
+
+                entity.Property(e => e.Variable)
+                    .HasColumnName("variable")
+                    .IsRequired();
+
+                entity.Property(e => e.Value)
+                    .HasColumnName("value")
                     .IsRequired();
 
                 entity.HasOne<Machine>()
@@ -163,6 +171,7 @@ namespace RemoteControllerMaster.Database
                 entity.HasKey(e => e.CommandId);
 
                 entity.Property(e => e.CommandId).HasColumnName("command_id").IsRequired();
+                entity.Property(e => e.Name).HasColumnName("name").IsRequired();
                 entity.Property(e => e.CommandText).HasColumnName("command_text").HasColumnType("text").IsRequired();
                 entity.Property(e => e.AdditionalInformationText).HasColumnName("additional_information_text").HasColumnType("text");
                 entity.Property(e => e.CommandType).HasColumnName("command_type").IsRequired();
@@ -170,22 +179,6 @@ namespace RemoteControllerMaster.Database
                 entity.HasOne<CommandType>()
                     .WithMany()
                     .HasForeignKey(e => e.CommandType);
-            });
-
-            modelBuilder.Entity<Command2Permission>(entity =>
-            {
-                entity.ToTable("commands_permissions", schema: "core");
-                entity.HasKey(e => new { e.CommandId, e.Permission });
-                entity.Property(e => e.CommandId).HasColumnName("command_id").IsRequired();
-                entity.Property(e => e.Permission).HasColumnName("permission").IsRequired();
-
-                entity.HasOne<User>()
-                    .WithMany()
-                    .HasForeignKey(e => e.CommandId);
-
-                entity.HasOne<Permission>()
-                    .WithMany()
-                    .HasForeignKey(e => e.Permission);
             });
 
             modelBuilder.Entity<User2Machine>(entity =>

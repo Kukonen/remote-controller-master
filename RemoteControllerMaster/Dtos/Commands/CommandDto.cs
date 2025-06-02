@@ -1,8 +1,8 @@
-﻿namespace RemoteControllerMaster.Database.Models
+﻿namespace RemoteControllerMaster.Dtos.Commands
 {
-    public class Command
+    public class CommandDto
     {
-        public Guid CommandId {  get; set; }
+        public Guid CommandId { get; set; }
         public string Name { get; set; }
         public Enums.CommandType CommandType { get; set; }
         public string CommandText { get; set; }

@@ -2,6 +2,7 @@
 using System.Text;
 using RemoteControllerMaster.Helpers.Authorize;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 namespace RemoteControllerMaster.Registrators
@@ -23,6 +24,24 @@ namespace RemoteControllerMaster.Registrators
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secret-jwt-sring-must-be-min-32-charecters-!!")),
                         ValidateLifetime = true,
                     };
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrEmpty(accessToken) &&
+                                (path.StartsWithSegments("/machinesHub")))
+                            {
+                                context.Token = accessToken;
+                            }
+
+                            return Task.CompletedTask;
+                        }
+                    };
+
                 });
 
             builder.Services.AddAuthorization(options =>
